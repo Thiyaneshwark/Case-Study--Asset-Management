@@ -8,6 +8,8 @@ import Cookies from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 import ErrorBoundary from "../../ErrorBoundary/ErrorBoundary";
 import { toast } from "react-toastify";
+import HeaderFooter from '../HeaderFooter';
+import { useAuth } from "../../contexts/AuthContext";
 
 const AssetRequestComponent = () => {
   const [requests, setRequests] = useState([]);
@@ -31,6 +33,8 @@ const [newRequest, setNewRequest] = useState({
 });
 const [isAdmin, setIsAdmin] = useState(false);
 const navigate = useNavigate();
+const [loggedTime, setLoggedTime] = useState('');
+const { logout, authState } = useAuth();
 
 useEffect(() => {
   fetchAssetRequests();
@@ -223,6 +227,10 @@ useEffect(() => {
     };
     setActionLogs((prevLogs) => [newLog, ...prevLogs]);
   };
+  useEffect(() => {
+    const now = new Date();
+    setLoggedTime(now.toLocaleTimeString());
+  }, []);
 
   const getStatusText = (status) => {
     switch (status) {
@@ -241,6 +249,10 @@ useEffect(() => {
   return (
     <ErrorBoundary>
       <div style={styles.container}>
+      {authState.user && (
+        <HeaderFooter userName={authState.user.sub} userRole={authState.user.role} loggedTime={loggedTime} />
+      )}
+      
         <button style={styles.backButton} onClick={() => navigate(-1)}>
           Back
         </button>

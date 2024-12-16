@@ -54,6 +54,7 @@ const AdminDashboard = () => {
   const handleSettingsClick = () => {
     setShowSettings(!showSettings);
   };
+
   return (
     <div className="container">
       {authState.user && (
@@ -69,46 +70,61 @@ const AdminDashboard = () => {
       <div className="overlay"></div>
       <h1 className="heading">Admin Dashboard</h1>
       <div className="buttonContainer">
-        <button className="button" onClick={() => handleFetchData(getCategories, "Categories", "/categories")}>
-          Categories
-        </button>
-        <button className="button" onClick={() => handleFetchData(getSubCategories, "Subcategories", "/subcategories")}>
-          Subcategories
-        </button>
-        <button className="button" onClick={() => handleFetchData(getAssets, "Assets", "/assets")}>
-          Assets
-        </button>
-        <button className="button" onClick={() => handleFetchData(getAssetRequests, "Asset Requests", "/asset-requests")}>
-          Asset Requests
-        </button>
-        <button className="button" onClick={() => handleFetchData(getAssetAllocations, "Asset Allocations", "/asset-allocations")}>
-          Asset Allocations
-        </button>
-        <button className="button" onClick={() => handleFetchData(getAudits, "Audit Logs", "/audit-logs")}>
-          Audit Logs
-        </button>
-        <button className="button" onClick={() => handleFetchData(getMaintenanceLogs, "Maintenance Logs", "/maintenance-logs")}>
-          Maintenance Logs
-        </button>
-        <button className="button" onClick={() => handleFetchData(getReturnRequests, "Return Request", "/return-requests")}>
-          Return Request
-        </button>
-        <button className="button" onClick={() => handleFetchData(getServiceRequests, "Service Request", "/service-requests")}>
-          Service Request
-        </button>
-      </div>
-
-      <div className="dataSection">
-        <h2>{section}</h2>
-        {data && data.length > 0 ? (
-          <ul>
-            {data.map((item, index) => (
-              <li key={index}>{JSON.stringify(item)}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No {section.toLowerCase()} data available.</p>
-        )}
+        <table className="buttonTable">
+          <tbody>
+            <tr>
+              <td>
+                <button className="button" onClick={() => handleFetchData(getCategories, "Categories", "/categories")}>
+                  Categories
+                </button>
+              </td>
+              <td>
+                <button className="button" onClick={() => handleFetchData(getSubCategories, "Subcategories", "/subcategories")}>
+                  Subcategories
+                </button>
+              </td>
+              <td>
+                <button className="button" onClick={() => handleFetchData(getAssets, "Assets", "/assets")}>
+                  Assets
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button className="button" onClick={() => handleFetchData(getAssetRequests, "Asset Requests", "/asset-requests")}>
+                  Asset Requests
+                </button>
+              </td>
+              <td>
+                <button className="button" onClick={() => handleFetchData(getAssetAllocations, "Asset Allocations", "/asset-allocations")}>
+                  Asset Allocations
+                </button>
+              </td>
+              <td>
+                <button className="button" onClick={() => handleFetchData(getAudits, "Audit Logs", "/audit-logs")}>
+                  Audit Logs
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button className="button" onClick={() => handleFetchData(getMaintenanceLogs, "Maintenance Logs", "/maintenance-logs")}>
+                  Maintenance Logs
+                </button>
+              </td>
+              <td>
+                <button className="button" onClick={() => handleFetchData(getReturnRequests, "Return Request", "/return-requests")}>
+                  Return Request
+                </button>
+              </td>
+              <td>
+                <button className="button" onClick={() => handleFetchData(getServiceRequests, "Service Request", "/service-requests")}>
+                  Service Request
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   );

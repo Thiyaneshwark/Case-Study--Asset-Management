@@ -1,6 +1,6 @@
 import CustomPagination from "../../CustomPagination";
-
-
+import HeaderFooter from '../HeaderFooter';
+import { useAuth } from "../../contexts/AuthContext";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { getServiceRequests, createServiceRequest, updateServiceRequest, deleteServiceRequest } from "../../services/ServiceRequestService";
@@ -30,6 +30,8 @@ const ServiceRequest = () => {
   const [itemsPerPage] = useState(10);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [loggedTime, setLoggedTime] = useState('');
+  const { logout, authState } = useAuth();
 
   useEffect(() => {
     fetchServiceRequests();
@@ -63,6 +65,11 @@ const ServiceRequest = () => {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    const now = new Date();
+    setLoggedTime(now.toLocaleTimeString());
+  }, []);
+  
 
   const fetchAssets = async () => {
     setLoading(true);
@@ -252,11 +259,14 @@ const ServiceRequest = () => {
 
   return (
     <div style={styles.container}>
+      {authState.user && (
+        <HeaderFooter userName={authState.user.sub} userRole={authState.user.role} loggedTime={loggedTime} />
+      )}
       <button style={styles.backButton} onClick={() => navigate(-1)}>
         Back
       </button>
       <div style={styles.formWrapper}>
-        <h1 style={styles.heading}>Service Requests</h1>
+        {/* <h1 style={styles.heading}>Service Requests</h1> */}
   
         {loading && <p>Loading...</p>}
         {error && <p className="text-red-500">{error}</p>}
@@ -409,16 +419,7 @@ const ServiceRequest = () => {
           onPageChange={setCurrentPage}
         />
   
-        <div style={styles.logSection}>
-          <h2 style={styles.logHeading}>Action Logs</h2>
-          <ul>
-            {actionLogs.map((log, index) => (
-              <li key={index} style={styles.logItem}>
-                {log.timestamp} - {log.message}
-              </li>
-            ))}
-          </ul>
-        </div>
+        
       </div>
     </div>
   );

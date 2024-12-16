@@ -30,10 +30,10 @@
 }
 
 .settingsIcon {
-  font-size: 34px;
+  font-size: 25px;
   color: white;
   position: absolute;
-  top: 120px; /* Adjust this value to move the button down */
+  top: 65px; /* Adjust this value to move the button down */
   right: 30px; /* Adjust this value to move the button to the left */
   cursor: pointer;
   z-index: 3;
@@ -41,7 +41,7 @@
 
 .settingsMenu {
   position: absolute;
-  top: 160px; /* Adjust this value to move the menu down */
+  top: 100px; /* Adjust this value to move the menu down */
   right: 10px;
   background-color: white;
   border: 1px solid #ddd;
@@ -89,6 +89,7 @@
   color: #fff;
   z-index: 2; /* Ensure heading is above the overlay */
   position: relative;
+  
 }
 
 .buttonContainer {
@@ -101,23 +102,7 @@
   position: relative;
 }
 
-.button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  text-align: center;
-  width: 200px; /* Fixed width for all buttons */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow to buttons */
-  transition: background-color 0.3s ease; /* Add a transition effect for background color */
-}
-
-.button:hover {
-  background-color: #0056b3; /* Darken the button color on hover */
-}
+.buttonTable td { padding: 10px; text-align: center; } .button { padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; text-align: center; width: 100%; /* Make buttons fill table cells */ box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow to buttons */ transition: background-color 0.3s ease; /* Add a transition effect for background color */ } .button:hover { background-color: #0056b3; /* Darken the button color on hover */ }
 
 .dataSection {
   background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background for data section */

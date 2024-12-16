@@ -4,6 +4,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
+  
   background-color: #007bff;
   color: white;
 }
@@ -28,6 +29,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  
 }
 
 .user-info {

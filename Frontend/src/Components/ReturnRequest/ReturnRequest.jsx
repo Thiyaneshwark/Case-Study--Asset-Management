@@ -7,6 +7,8 @@ import { getCategories } from '../../services/CategoryService';
 import Cookies from 'js-cookie';
 import {jwtDecode} from 'jwt-decode'; // Correctly import jwt-decode
 import { toast } from 'react-toastify';
+import HeaderFooter from '../HeaderFooter';
+import { useAuth } from "../../contexts/AuthContext";
 // Error Boundary for unexpected errors
 class ErrorBoundary extends React.Component {
   state = { hasError: false };
@@ -39,6 +41,8 @@ const ReturnRequestComponent = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [logsPerPage] = useState(10);
   const [showReturnRequestForm, setShowReturnRequestForm] = useState(false);
+  const [loggedTime, setLoggedTime] = useState('');
+  const { logout, authState } = useAuth();
 
   const toggleFormVisibility = () => {
     setShowReturnRequestForm(!showReturnRequestForm);
@@ -104,6 +108,10 @@ const ReturnRequestComponent = () => {
       logAction("Error fetching categories", "error");
     }
   };
+  useEffect(() => {
+    const now = new Date();
+    setLoggedTime(now.toLocaleTimeString());
+  }, []);
 
   const fetchReturnRequests = async () => {
     setLoading(true);
@@ -275,6 +283,9 @@ const ReturnRequestComponent = () => {
             return (
               <ErrorBoundary>
                 <div style={styles.container}>
+                {authState.user && (
+        <HeaderFooter userName={authState.user.sub} userRole={authState.user.role} loggedTime={loggedTime} />
+      )}
                 <button style={styles.backButton} onClick={() => navigate(-1)}>Back</button>
                   <button style={styles.toggleButton} onClick={toggleFormVisibility}>
                     {showReturnRequestForm ? "Hide Return Request Form" : "Show Return Request Form"}
@@ -418,16 +429,7 @@ const ReturnRequestComponent = () => {
                     )}
                   </section>
             
-                  <section style={styles.logSection}>
-                    <h2 style={styles.heading}>Action Logs</h2>
-                    <ul>
-                      {actionLogs.map((log, index) => (
-                        <li key={index} style={styles.logItem}>
-                          <strong>{log.timestamp}:</strong> {log.message} [{log.status}]
-                        </li>
-                      ))}
-                    </ul>
-                  </section>
+                  
             
                   <div>
                     <button

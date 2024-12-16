@@ -11,6 +11,8 @@ import { getSubCategories } from "../../services/SubCategoryService";
 import Cookies from "js-cookie";
 import {jwtDecode} from "jwt-decode";
 import { toast } from "react-toastify";
+import HeaderFooter from '../HeaderFooter';
+import { useAuth } from "../../contexts/AuthContext";
 
 const Asset = () => {
   const [decoded, setDecoded] = useState(null);
@@ -30,6 +32,8 @@ const Asset = () => {
   const [loading, setLoading] = useState(false);
   const [actionLogs, setActionLogs] = useState([]);
   const navigate = useNavigate();
+  const [loggedTime, setLoggedTime] = useState('');
+  const { logout, authState } = useAuth();
 
   useEffect(() => {
     fetchAssets();
@@ -227,6 +231,10 @@ const Asset = () => {
     }
     return true;
   };
+  useEffect(() => {
+    const now = new Date();
+    setLoggedTime(now.toLocaleTimeString());
+  }, []);
   
 
   const resetForm = () => {
@@ -244,6 +252,9 @@ const Asset = () => {
 
   return (
     <div style={styles.container}>
+      {authState.user && (
+        <HeaderFooter userName={authState.user.sub} userRole={authState.user.role} loggedTime={loggedTime} />
+      )}
       <button style={styles.backButton} onClick={() => navigate(-1)}>
         Back
       </button>
@@ -396,16 +407,7 @@ const Asset = () => {
         )}
       </section>
 
-      <section style={styles.logSection}>
-        <h2 style={styles.heading}>Action Logs</h2>
-        <ul>
-          {actionLogs.map((log, index) => (
-            <li key={index} style={styles.logItem}>
-              <strong>{log.timestamp}:</strong> {log.message} [{log.status}]
-            </li>
-          ))}
-        </ul>
-      </section>
+      
     </div>
   );
 };

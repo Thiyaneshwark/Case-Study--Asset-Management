@@ -9,11 +9,15 @@ import {
 import { getCategories } from "../../services/CategoryService";
 import Cookies from "js-cookie";
 import {jwtDecode} from "jwt-decode";
+import HeaderFooter from '../HeaderFooter';
+import { useAuth } from "../../contexts/AuthContext";
 
 const SubCategoryComponent = () => {
   const navigate = useNavigate();
   const [subCategories, setSubCategories] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [loggedTime, setLoggedTime] = useState('');
+  const { logout, authState } = useAuth();
   const [newSubCategory, setNewSubCategory] = useState({
     subCategoryName: "",
     quantity: 0,
@@ -81,6 +85,11 @@ const SubCategoryComponent = () => {
       console.error("Error creating subcategory:", error);
     }
   };
+  useEffect(() => {
+    const now = new Date();
+    setLoggedTime(now.toLocaleTimeString());
+  }, []);
+  
 
   const handleUpdateSubCategory = async (id) => {
     if (!editingSubCategory.subCategoryName || editingSubCategory.quantity <= 0 || !editingSubCategory.categoryId) {
@@ -121,6 +130,9 @@ const SubCategoryComponent = () => {
 
   return (
     <div style={styles.container}>
+      {authState.user && (
+        <HeaderFooter userName={authState.user.sub} userRole={authState.user.role} loggedTime={loggedTime} />
+      )}
       <button style={styles.backButton} onClick={() => navigate(-1)}>
         Back
       </button>

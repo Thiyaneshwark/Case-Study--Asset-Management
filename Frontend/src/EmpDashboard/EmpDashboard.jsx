@@ -81,18 +81,7 @@ const EmpDashboard = () => {
         </button>
       </div>
 
-      <div className="dataSection">
-        <h2>{section}</h2>
-        {data && data.length > 0 ? (
-          <ul>
-            {data.map((item, index) => (
-              <li key={index}>{JSON.stringify(item)}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>No {section.toLowerCase()} data available.</p>
-        )}
-      </div>
+      
     </div>
   );
 };

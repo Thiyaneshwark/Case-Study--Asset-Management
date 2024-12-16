@@ -11,6 +11,9 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import HeaderFooter from '../HeaderFooter';
+import { useAuth } from "../../contexts/AuthContext";
+
 
 const AssetAllocation = () => {
   const navigate = useNavigate();
@@ -25,6 +28,8 @@ const AssetAllocation = () => {
   const [loading, setLoading] = useState(false);
   const [subCategories, setSubCategories] = useState([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [loggedTime, setLoggedTime] = useState('');
+  const { logout, authState } = useAuth();
 
   const toggleFormVisibility = () => {
     setShowCreateForm(!showCreateForm);
@@ -131,6 +136,10 @@ const AssetAllocation = () => {
     }
     return true;
   };
+  useEffect(() => {
+    const now = new Date();
+    setLoggedTime(now.toLocaleTimeString());
+  }, []);
 
   const logAction = (message, status) => {
     console.log(`${status.toUpperCase()}: ${message}`);
@@ -155,6 +164,9 @@ const AssetAllocation = () => {
 
   return (
     <div style={styles.container}>
+      {authState.user && (
+        <HeaderFooter userName={authState.user.sub} userRole={authState.user.role} loggedTime={loggedTime} />
+      )}
       <button style={styles.backButton} onClick={() => navigate(-1)}>
         Back
       </button>
@@ -279,7 +291,7 @@ const styles = {
   },
   backButton: {
     position: "absolute",
-    top: "10px",
+    top: "100px",
     right: "10px",
     backgroundColor: "#007bff", // Blue color
     color: "#fff",

@@ -7,6 +7,8 @@ import {
   deleteAudit,
 } from "../../services/AuditService";
 import { getAssets } from "../../services/AssetService";
+import HeaderFooter from '../HeaderFooter';
+import { useAuth } from "../../contexts/AuthContext";
 
 
 class ErrorBoundary extends React.Component {
@@ -47,6 +49,8 @@ const AuditComponent = () => {
   });
   const [showCreateAuditForm, setShowCreateAuditForm] = useState(false);
   const navigate = useNavigate();
+  const [loggedTime, setLoggedTime] = useState('');
+  const { logout, authState } = useAuth();
 
   const toggleFormVisibility = () => {
     setShowCreateAuditForm(!showCreateAuditForm);
@@ -100,7 +104,10 @@ const AuditComponent = () => {
   };
   
   
-  
+  useEffect(() => {
+    const now = new Date();
+    setLoggedTime(now.toLocaleTimeString());
+  }, []);
   
 
   const handleCreateAudit = async () => {
@@ -238,6 +245,9 @@ const AuditComponent = () => {
   return (
     <ErrorBoundary>
       <div style={styles.container}>
+      {authState.user && (
+        <HeaderFooter userName={authState.user.sub} userRole={authState.user.role} loggedTime={loggedTime} />
+      )}
       <button style={styles.backButton} onClick={() => navigate(-1)}>
         Back
       </button>
@@ -383,16 +393,7 @@ const AuditComponent = () => {
           )}
         </section>
   
-        <section style={styles.logSection}>
-          <h2 style={styles.heading}>Action Logs</h2>
-          <ul>
-            {actionLogs.map((log, index) => (
-              <li key={index} style={styles.logItem}>
-                <strong>{log.timestamp}:</strong> {log.message} [{log.status}]
-              </li>
-            ))}
-          </ul>
-        </section>
+        
       </div>
     </ErrorBoundary>
   );

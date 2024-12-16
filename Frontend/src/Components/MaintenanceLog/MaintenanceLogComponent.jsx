@@ -7,6 +7,8 @@ import {
   deleteMaintenanceLog,
 } from "../../services/MaintainenceLogService";
 import { getAssets } from "../../services/AssetService";
+import HeaderFooter from '../HeaderFooter';
+import { useAuth } from "../../contexts/AuthContext";
 
 // Error Boundary for unexpected errors
 class ErrorBoundary extends React.Component {
@@ -42,6 +44,8 @@ const MaintenanceLogComponent = () => {
   const [logsPerPage] = useState(10);
   const [assets, setAssets] = useState([]);
   const [showMaintenanceLogForm, setShowMaintenanceLogForm] = useState(false);
+  const [loggedTime, setLoggedTime] = useState('');
+  const { logout, authState } = useAuth();
   const [formState, setFormState] = useState({
     maintenanceId: null,
     assetId: "",
@@ -52,6 +56,10 @@ const MaintenanceLogComponent = () => {
     maintenance_date: new Date().toISOString().split("T")[0], // Default to today's date
     maintenanceLog: "" // Ensure this field is included
   });
+  useEffect(() => {
+    const now = new Date();
+    setLoggedTime(now.toLocaleTimeString());
+  }, []);
   
   
 
@@ -231,6 +239,9 @@ const MaintenanceLogComponent = () => {
   return (
     <ErrorBoundary>
       <div style={styles.container}>
+      {authState.user && (
+        <HeaderFooter userName={authState.user.sub} userRole={authState.user.role} loggedTime={loggedTime} />
+      )}
         <button style={styles.backButton} onClick={() => navigate(-1)}>
           Back
         </button>
@@ -380,17 +391,7 @@ const MaintenanceLogComponent = () => {
           </button>
         </div>
   
-        {/* Action Logs */}
-        <div style={styles.logSection}>
-          <h2 style={styles.subHeading}>Action Logs</h2>
-          <ul>
-            {actionLogs.map((log, index) => (
-              <li key={index} style={log.status === 'error' ? styles.errorLog : styles.successLog}>
-                {log.timestamp} - {log.message}
-              </li>
-            ))}
-          </ul>
-        </div>
+        
       </div>
     </ErrorBoundary>
   );
